@@ -2,7 +2,8 @@
     <div class="col-8">
         <div class="card">
             <div class="card-header bg-success">
-                    Client List:
+                    Client List: {{firstName()}}
+                    <div class="btn btn-danger" (click)="changeName()">Change name</div>
             </div>
             <div class="card-body">
                 <div class="col-12 ">
@@ -10,28 +11,29 @@
                         <thead>
                             <tr>
                                 <th class="border border-gray-300 bg-gray-100">Sr No</th>
+                                <th class="border border-gray-300 bg-gray-100">Client Name</th>
                                 <th class="border border-gray-300 bg-gray-100">Project Name</th>
+                                <th class="border border-gray-300 bg-gray-100">Employee Name</th>
                                 <th class="border border-gray-300 bg-gray-100">Start Date</th>
-                                <th class="border border-gray-300 bg-gray-100">End Date</th>
-                                <th class="border border-gray-300 bg-gray-100">Email</th>
                                 <th class="border border-gray-300 bg-gray-100">Action</th>
                             
                             </tr>
                         </thead>
                         <tbody>
-                    
+                            @for (item of projectList(); track $index) {
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{$index + 1}}</td>
+                                    <td>{{item.clientName}}</td>
+                                    <td>{{item.projectName}}</td>
+                                    <td>{{item.empName}}</td>
+                                    <td>{{item.startDate | date: 'dd-MMM-yyyy'}}</td>
                                     <td class="flex justify-around">
-                                        <button class="btn btn-primary w-[40%]" >Edit</button>
-                                        <button class="btn btn-primary w-[40%]" >Delete</button>
+                                        <button class="btn btn-primary w-[100px]" >Edit</button>
+                                        <button class="btn btn-danger w-[100px]">Delete</button>
                                     </td>
                                    </tr>
-                          
+                            }
+                           
                         </tbody>
                     </table>
                 </div>

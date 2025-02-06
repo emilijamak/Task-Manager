@@ -3,10 +3,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Client } from '../../model/class/Client';
 import { FormsModule } from '@angular/forms';
 import { APIResponseModel } from '../../model/interface/role';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-client',
-  imports: [FormsModule],
+  imports: [FormsModule, UpperCasePipe, AsyncPipe],
   templateUrl: './client.component.html',
   styleUrl: './client.component.scss'
 })
@@ -16,8 +18,11 @@ export class ClientComponent implements OnInit{
   clientList: Client[]= [];
   clientService = inject(ClientService)
 
+  userList$ : Observable<any> = new Observable<any>
+
   ngOnInit(): void {
     this.loadClient();
+    this.userList$ = this.clientService.getAllUsers()
   }
 
   loadClient() {

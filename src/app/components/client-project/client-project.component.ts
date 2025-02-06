@@ -1,12 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, MaxLengthValidator, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientService } from '../../services/client.service';
-import { APIResponseModel, Employee } from '../../model/interface/role';
+import { APIResponseModel, ClientProject, Employee } from '../../model/interface/role';
 import { Client } from '../../model/class/Client';
+import { DatePipe } from '@angular/common';
+
+
 
 @Component({
   selector: 'app-client-project',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DatePipe],
   templateUrl: './client-project.component.html',
   styleUrl: './client-project.component.scss'
 })
@@ -15,15 +18,24 @@ export class ClientProjectComponent implements OnInit{
   ngOnInit(): void {
     this.getAllClients();
     this.getAllEmployee();
+    this.getAllClientProjects();
   }
 
   clientSrv = inject(ClientService);
   employeeList: Employee[] = [];
   clientList: Client[] = [];
 
+  firstName = signal('Angular Project MIAU')
+  projectList = signal<ClientProject[]>([])
+
   getAllEmployee() {
     this.clientSrv.getAllEmployee().subscribe((res: APIResponseModel) => {
       this.employeeList = res.data;
+    })
+  }
+  getAllClientProjects() {
+    this.clientSrv.getAllClientProjects().subscribe((res: APIResponseModel) => {
+      this.projectList.set(res.data)
     })
   }
   getAllClients() {
@@ -45,6 +57,10 @@ export class ClientProjectComponent implements OnInit{
     })
   }
 
+  changeName() {
+    this.firstName.set('ReactJs')
+  }
+
   projectForm: FormGroup = new FormGroup({
     clientProjectId: new FormControl(0),
     projectName: new FormControl('',[Validators.required, Validators.minLength(4)]),
@@ -62,3 +78,5 @@ export class ClientProjectComponent implements OnInit{
 
   })
 }
+
+
