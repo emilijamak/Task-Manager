@@ -14,7 +14,7 @@ export class MyButtonComponent {
   @Output() onBtnClicked = new EventEmitter<any>();
 
   OnClick() {
-    this.onBtnClicked.emit();
+    this.onBtnClicked.emit('admin');
   }
 
 }

@@ -1,0 +1,46 @@
+<div class="bg-slate-900 p-4 text-white">
+    <div class="container mx-auto flex flex-wrap items-center justify-between">
+        <!-- Logo Section -->
+        <div class="text-2xl font-bold">
+            Logo
+        </div>
+
+        <!-- Links Section -->
+        <div class="hidden md:flex gap-6 text-lg text-gray-200 font-semibold">
+            <a href="#" class="hover:text-gray-300 transition" routerLink="/master" routerLinkActive="text-white">Master</a>
+            <a href="#" class="hover:text-gray-300 transition" routerLink="/employee" routerLinkActive="text-white">Employee</a>
+            <a href="#" class="hover:text-gray-300 transition" routerLink="client" routerLinkActive="text-white">Client</a>
+            <a href="#" class="hover:text-gray-300 transition" routerLink="client-project" routerLinkActive="text-white">Client Project</a>
+        </div>
+
+        <!-- Search Section -->
+        <div class="flex items-center">
+            <form class="flex gap-2">
+                <input
+                    class="form-input p-2 rounded-md border border-gray-600 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="search" placeholder="Search" aria-label="Search">
+                <button
+                    class="btn bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md transition"
+                    type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Mobile Toggle Button -->
+        <button class="block md:hidden text-white focus:outline-none" id="navbarToggle">
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden mt-4">
+        <a href="#" class="block py-2 px-4 hover:bg-slate-800 rounded">Home</a>
+        <a href="#" class="block py-2 px-4 hover:bg-slate-800 rounded">About</a>
+        <a href="#" class="block py-2 px-4 hover:bg-slate-800 rounded">Contact</a>
+    </div>
+</div>
+<div class="container pt-3">
+    <router-outlet></router-outlet>
+</div>
