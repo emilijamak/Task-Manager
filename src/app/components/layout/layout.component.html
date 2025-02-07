@@ -16,12 +16,10 @@
         <!-- Search Section -->
         <div class="flex items-center">
             <form class="flex gap-2">
-                <input
-                    class="form-input p-2 rounded-md border border-gray-600 bg-slate-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="search" placeholder="Search" aria-label="Search">
-                <button
+                
+                <button (click)="onLogOut()"
                     class="btn bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-md transition"
-                    type="submit">Search</button>
+                    type="submit" >Log Out</button>
             </form>
         </div>
 

@@ -30,6 +30,8 @@ export class ClientService {
     return this.http.get<APIResponseModel>(environment.API_URL +  Constant.API_METHOD.GET_ALL_EMP)
   }
 
+
+
   addUpdate (obj: Client): Observable<APIResponseModel> {
     return this.http.post<APIResponseModel>(environment.API_URL +  "AddUpdateClient", obj)
   }
@@ -37,8 +39,16 @@ export class ClientService {
   deleteClientById (id: number): Observable<APIResponseModel> {
     return this.http.delete<APIResponseModel>(environment.API_URL +  "DeleteClientByClientId?clientId=" +id)
   }
+ getEmployeeById (id: number): Observable<APIResponseModel> {
+    return this.http.get<APIResponseModel>(environment.API_URL +  "GetEmployeeByEmployeeId?id=" +id)
+  }
 
   addClientProjectUpdate (obj: ClientProject): Observable<APIResponseModel> {
     return this.http.post<APIResponseModel>(environment.API_URL +  "AddUpdateClientProject", obj)
   }
+
+  updateClientProject(obj: ClientProject): Observable<APIResponseModel> {
+    return this.http.put<APIResponseModel>(`${environment.API_URL}AddUpdateClientProject`, obj);
+  }
+  
 }

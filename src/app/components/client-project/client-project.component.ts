@@ -1,82 +1,107 @@
+import { ClientService } from './../../services/client.service';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { FormControl, FormGroup, MaxLengthValidator, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClientService } from '../../services/client.service';
-import { APIResponseModel, ClientProject, Employee } from '../../model/interface/role';
+import { FormControl, FormGroup, FormsModule, MaxLengthValidator, ReactiveFormsModule, Validators } from '@angular/forms';
+import { APIResponseModel, Employee } from '../../model/interface/role';
 import { Client } from '../../model/class/Client';
 import { DatePipe } from '@angular/common';
+import { ClientProject } from '../../model/class/ClientProject';
+import { Observable } from 'rxjs';
 
 
 
 @Component({
   selector: 'app-client-project',
-  imports: [ReactiveFormsModule, DatePipe],
+  standalone: true,
+  imports: [FormsModule, DatePipe],
   templateUrl: './client-project.component.html',
   styleUrl: './client-project.component.scss'
 })
 export class ClientProjectComponent implements OnInit{
 
-  ngOnInit(): void {
-    this.getAllClients();
-    this.getAllEmployee();
-    this.getAllClientProjects();
-  }
+  clientProjectObj: ClientProject = new ClientProject();
+  clientProjectsList: ClientProject[] = [];
+  clientService = inject(ClientService)
+  isLoader: boolean = true;
 
-  clientSrv = inject(ClientService);
   employeeList: Employee[] = [];
   clientList: Client[] = [];
+  employee: Employee[] = []
 
-  firstName = signal('Angular Project MIAU')
-  projectList = signal<ClientProject[]>([])
+  projectList$ : Observable<any> = new Observable<any>
+
+
+  ngOnInit(): void {
+    this.loadClientProjects();
+    this.getAllClients();
+    this.getAllEmployee()
+    this.projectList$ = this.clientService.getAllClientProjects()
+  }
+
+
+  loadClientProjects() {
+    this.clientService.getAllClientProjects().subscribe((res:APIResponseModel) => {
+      this.clientProjectsList= res.data;
+      console.log(this.clientProjectsList);
+      this.isLoader = false;
+    })
+  }
+
 
   getAllEmployee() {
-    this.clientSrv.getAllEmployee().subscribe((res: APIResponseModel) => {
+    this.clientService.getAllEmployee().subscribe((res: APIResponseModel) => {
       this.employeeList = res.data;
+
+      
     })
   }
-  getAllClientProjects() {
-    this.clientSrv.getAllClientProjects().subscribe((res: APIResponseModel) => {
-      this.projectList.set(res.data)
-    })
-  }
+
   getAllClients() {
-    this.clientSrv.getAllClients().subscribe((res: APIResponseModel) => {
+    this.clientService.getAllClients().subscribe((res: APIResponseModel) => {
       this.clientList = res.data;
+      console.log(res.data);
+      
     })
   }
 
-  onSaveProject() {
-    const formValue = this.projectForm.value;
-    console.log("Submitting Form:", formValue); // Debugging
+  getEmployeeById(id: number) {
+    
+    this.clientService.getEmployeeById(id).subscribe((res: APIResponseModel) => {
+      const employeeData: Employee = res.data;
 
-    this.clientSrv.addClientProjectUpdate(formValue).subscribe((res: APIResponseModel) => {
+      this.clientProjectObj.empName = employeeData.empName;
+      this.clientProjectObj.empId = employeeData.empId;
+      this.clientProjectObj.empCode = employeeData.empCode;
+      this.clientProjectObj.empEmailId = employeeData.empEmailId
+      console.log(this.clientProjectObj);
+      
+    })
+  }
+
+  onEmployeeChange(empId: number) {
+    this.getEmployeeById(empId)
+  }
+
+
+  onSaveClientProject() {
+
+    this.clientService.addClientProjectUpdate(this.clientProjectObj).subscribe((res:APIResponseModel)=> {
       if(res.result) {
-        alert('Project Created Success')
+        console.log(this.clientProjectObj);
+        
+          alert('Client created successfully')
+          this.loadClientProjects();
+          this.clientProjectObj = new ClientProject();
+  
       } else {
         alert(res.message)
+        console.log(this.clientProjectObj);
       }
     })
   }
 
-  changeName() {
-    this.firstName.set('ReactJs')
-  }
+  
 
-  projectForm: FormGroup = new FormGroup({
-    clientProjectId: new FormControl(0),
-    projectName: new FormControl('',[Validators.required, Validators.minLength(4)]),
-    startDate: new FormControl('', [Validators.required]),
-    expectedEndDate: new FormControl('', [Validators.required]),
-    leadByEmpId: new FormControl('', [Validators.required, Validators.maxLength(10)]),
-    completedDate: new FormControl(''),
-    contactPerson: new FormControl('',[Validators.required, Validators.minLength(2), Validators.maxLength(40)]),
-    contactPersonContactNo: new FormControl('',[Validators.required, Validators.maxLength(15)]),
-    totalEmpWorking: new FormControl('',[Validators.required, Validators.minLength(1), Validators.maxLength(10), Validators.pattern('^[0-9]*$')]),
-    projectCost: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.pattern('^[0-9]*$')]),
-    projectDetails: new FormControl('', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]),
-    contactPersonEmailId: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-    clientId: new FormControl('', [Validators.required]),
-
-  })
+ 
 }
 
 

@@ -1,225 +1,145 @@
-<div class="row">
-    <div class="col-8">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                    Project List:
-            
+
+<div class="">
+    
+    <div class="flex justify-center">
+        @if (isLoader) {
+            <div class="col-8">
+              <div class="spinner-border spinner-border-sm text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              
             </div>
-            <div class="card-body">
-                <div class="col-12 ">
-                    <table class="table border-collapse table-bordered border border-gray-200 ">
-                        <thead>
-                            <tr>
-                                <th class="border border-gray-300 bg-gray-100">Sr No</th>
-                                <th class="border border-gray-300 bg-gray-100">Client Name</th>
-                                <th class="border border-gray-300 bg-gray-100">Project Name</th>
-                                <th class="border border-gray-300 bg-gray-100">Employee Name</th>
-                                <th class="border border-gray-300 bg-gray-100">Start Date</th>
-                                <th class="border border-gray-300 bg-gray-100">Action</th>
-                            
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (item of projectList(); track $index) {
+          } @else {
+        <div class="col-8">
+            
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                        Client List:
+                </div>
+                <div class="card-body">
+                    <div class="col-12 ">
+                        <table class="table border-collapse table-bordered border border-gray-200 ">
+                            <thead>
                                 <tr>
-                                    <td>{{$index + 1}}</td>
-                                    <td>{{item.clientName}}</td>
-                                    <td>{{item.projectName}}</td>
-                                    <td>{{item.empName}}</td>
-                                    <td>{{item.startDate | date: 'dd-MMM-yyyy'}}</td>
-                                    <td class="flex justify-around">
-                                        <button class="btn btn-primary w-[100px]" >Edit</button>
-                                        <button class="btn btn-danger w-[100px]">Delete</button>
-                                    </td>
-                                   </tr>
-                            }
-                           
-                        </tbody>
-                    </table>
+                                    <th class="border border-gray-300 bg-gray-100">Sr No</th>
+                                    <th class="border border-gray-300 bg-gray-100">Project Name</th>
+                                    <th class="border border-gray-300 bg-gray-100">Client Name</th>
+                                    <th class="border border-gray-300 bg-gray-100">Start Date</th>
+                                    <th class="border border-gray-300 bg-gray-100">Employee Name</th>
+                                    <!-- <th class="border border-gray-300 bg-gray-100">Action</th> -->
+                                
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (item of clientProjectsList; track $index) {
+                                    <tr>
+                                        <td>{{$index + 1}}</td>
+                                        <td>{{item.projectName}}</td>
+                                        <td>{{item.clientName}}</td>
+                                        <td>{{item.startDate}}</td>
+                                        <td>{{item.empName}}</td>
+                                        
+                                    </tr>
+                                }
+                            
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-4">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                    New Project:
-            </div>
-            <div class="card-body">
-                    <form [formGroup]="projectForm">
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="">Project Name</label>
-                            <input type="text" formControlName="projectName" class="form-control">
-                            @if(projectForm.controls['projectName'].touched) {
-                            <div class="text-danger">
-                                @if (projectForm.controls['projectName'].errors?.['required']) {
-                                    <span>This field is required.</span>
-                                }
-                                @if (projectForm.controls['projectName'].errors?.['minlength']) {
-                                    <span>Must be at least 4 characters long.</span>
+        </div>}
+        
+        <!-- <div class="col-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                        New Project:
+                </div>
+                <div class="card-body">
+                    <form #form="ngForm">
+                        <div class="row">
+                            
+                            <div class="col-6">
+                                <label for="">Project Name</label>
+                                <input type="text" #projectName="ngModel" maxlength="50" name="projectName" required [(ngModel)]="clientProjectObj.projectName" class="form-control">
+                                @if(projectName.touched) {
+                                    <div class="text-danger">
+                                        @if(projectName?.errors?.['required']) {
+                                            <span>This is required</span>
+                                        }
+                                    
+                                    </div>
                                 }
                             </div>
-                        }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Start Date</label>
-                            <input type="date" formControlName="startDate" class="form-control">
-                            @if(projectForm.controls['startDate'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['startDate'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Expected End Date</label>
-                            <input type="date" formControlName="expectedEndDate" class="form-control">
-                            @if(projectForm.controls['expectedEndDate'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['expectedEndDate'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Contact Name</label>
-                            <input type="text" maxlength="40" formControlName="contactPerson" class="form-control">
-                            @if(projectForm.controls['contactPerson'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['contactPerson'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                    @if (projectForm.controls['contactPerson'].errors?.['maxlength']) {
-                                        <span>Must be 40 characters or fewer.</span>
-                                    }
-                                    @if (projectForm.controls['contactPerson'].errors?.['minlength']) {
-                                        <span>Must be at least 2 characters long.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Contact Mobile</label>
-                            <input type="text" formControlName="contactPersonContactNo" class="form-control">
-                            @if(projectForm.controls['contactPersonContactNo'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['contactPersonContactNo'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                    @if (projectForm.controls['contactPersonContactNo'].errors?.['maxlength']) {
-                                        <span>Must be 15 characters or fewer.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Contact Email</label>
-                            <input type="text" formControlName="contactPersonEmailId" maxlength="50" class="form-control">
-                            @if(projectForm.controls['contactPersonEmailId'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['contactPersonEmailId'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                    @if (projectForm.controls['contactPersonEmailId'].errors?.['minlength']) {
-                                        <span>Must be at least 3 characters long.</span>
-                                    }
-                                    @if (projectForm.controls['contactPersonEmailId'].errors?.['maxlength']) {
-                                        <span>Must be 50 characters or fewer.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Total Employee Count</label>
-                            <input type="text" formControlName="totalEmpWorking" class="form-control">
-                            @if(projectForm.controls['totalEmpWorking'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['totalEmpWorking'].errors?.['required']) {
-                                        <span>This field is required.</span>
-                                    }
-                                    @if (projectForm.controls['totalEmpWorking'].errors?.['maxlength']) {
-                                        <span>Must be 200 characters or fewer.</span>
-                                    }
-                                    @if (projectForm.controls['projectCost'].errors?.['pattern']) {
-                                        <span>Must be a number.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                    
-                        <div class="col-6">
-                            <label for="">Project Costing</label>
-                            <input maxlength="15" type="text" formControlName="projectCost" class="form-control">
-                            @if(projectForm.controls['projectCost'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['projectCost'].errors?.['required']) {
-                                        <span>This is required</span>
-                                    }
-                                    @if (projectForm.controls['projectCost'].errors?.['maxlength']) {
-                                        <span>Must be 15 characters or fewer.</span>
-                                    }
-                                    @if (projectForm.controls['projectCost'].errors?.['pattern']) {
-                                        <span>Must be a number.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-12">
-                            <label for="">Project Description</label>
-                            <textarea name="" formControlName="projectDetails" class="form-control" id=""></textarea>
-                            @if(projectForm.controls['projectDetails'].touched) {
-                                <div class="text-danger">
-                                    @if (projectForm.controls['projectDetails'].errors?.['required']) {
-                                        <span>This is required</span>
-                                    }
-                                    @if (projectForm.controls['projectDetails'].errors?.['maxlength']) {
-                                        <span>Must be 200 characters or fewer.</span>
-                                    }
-                                    @if (projectForm.controls['projectDetails'].errors?.['minlength']) {
-                                        <span>Must be at least 10 characters long.</span>
-                                    }
-                                </div>
-                            }
-                        </div>
-                        <div class="col-6">
-                            <label for="">Select Client</label>
-                            <select formControlName="clientId" class="form-control">
-                                <option value="">Select Client</option>
-                                @for (item of clientList; track $index) {
-                                    <option [value]="item.clientId">{{item.companyName}}</option>
+                            <div class="col-6">
+                                <label for="">Start Date</label>
+                                <input type="date" #startDate="ngModel" minlength="2" name="startDate" required [(ngModel)]="clientProjectObj.startDate" maxlength="10" class="form-control" >
+                                @if(startDate.touched) {
+                                    <div class="text-danger">
+                                        @if(startDate?.errors?.['required']) {
+                                            <span>This is required</span>
+                                        }
+                                        @if(startDate?.errors?.['minlength']) {
+                                            <span>Minimum lenght is 2 chars</span>
+                                        }
+                                        
+                                    </div>
                                 }
-                            </select>
-                        </div>
-                        <div class="col-6">
-                            <label for="">Lead By</label>
-                            <select formControlName="leadByEmpId" class="form-control">
-                                <option value="">Select Employee</option>
-                                @for (item of employeeList; track $index) {
-                                    <option [value]="item.empId">{{item.empName}} - {{item.empCode}}</option>
+                            </div>
+                            <div class="col-6">
+                                <label for="">Expected End Date</label>
+                                <input type="date" #expectedEndDate="ngModel" minlength="2" name="expectedEndDate" required [(ngModel)]="clientProjectObj.expectedEndDate" maxlength="20" class="form-control">
+                                @if(expectedEndDate.touched) {
+                                    <div class="text-danger">
+                                        @if(expectedEndDate?.errors?.['required']) {
+                                            <span>This is required</span>
+                                        }
+                                        @if(expectedEndDate?.errors?.['minlength']) {
+                                            <span>Minimum lenght is 2 chars</span>
+                                        }
+                                        
+                                    </div>
                                 }
-                            </select>
+                                
+                            </div>
+                            <div class="col-6">
+                                <label for="">Select Client</label>
+                                <select [(ngModel)]="clientProjectObj.clientName" name="clientName" class="form-control" required>
+                                    @for (item of clientList; track $index) {
+                                        <option [value]="item.companyName">{{item.companyName}}</option>
+                                    }
+                                </select>
+                                
+                            </div>
+<!-- 
+                            Lead By
+                            <div class="col-6">
+                                <label for="">Lead By</label>
+                                <select [(ngModel)]="clientProjectObj.empId" name="empId" class="form-control" required (change)="onEmployeeChange(clientProjectObj.empId)">
+                                    @for (item of employeeList; track $index) {
+                                        <option [value]="item.empId">{{item.empName}} - {{item.empCode}}</option>
+                                    }
+                                </select>
+                                
+                            </div>
                         </div>
+                            
+                    </form>
                 
-                    </div> 
                     <div class="row">
                         <div class="col-6 pt-2">
                             <button class="btn btn-secondary">Reset</button>
                         </div>
             
                         <div class="col-6 pt-2">
-                            <button class="btn btn-success" [disabled]="projectForm.invalid" (click)="onSaveProject()">
-                               Save Project
+                            <button class="btn btn-success" [disabled]="!form.valid" (click)="onSaveClientProject()">
+                                Save Project
                             </button>
                         </div>
                 
                 </div>
-                </form>
-        
-            
             </div>
-        </div>
-    </div>
+        </div> --> 
+        
+    </div> 
+
 </div>
