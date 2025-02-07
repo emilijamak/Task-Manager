@@ -29,7 +29,7 @@ export class ClientComponent implements OnInit{
   loadClient() {
     this.clientService.getAllClients().subscribe((res:APIResponseModel) => {
       this.clientList= res.data;
-      this.isLoader = false;
+      
     })
   }
 
