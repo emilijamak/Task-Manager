@@ -39,8 +39,8 @@
                             <td>  {{item.createdAt}}</td>
                             <td> {{ item.completed ? 'Completed' : 'Pending' }}</td>
                             <td> <div class="flex gap-2">
-                                <div class="btn bg-green-800 hover:bg-green-600 text-white flex justify-center items-center h-[40px] w-[100px]">Edit</div>
-                                <div class="btn bg-pink-500 hover:bg-pink-400 text-white flex justify-center items-center h-[40px] w-[100px]">Delete</div>
+                                <div class="btn bg-green-800 hover:bg-green-600 text-white flex justify-center items-center h-[40px] w-[100px]" (click)="onEditTask(item)">Edit</div>
+                                <div class="btn bg-pink-500 hover:bg-pink-400 text-white flex justify-center items-center h-[40px] w-[100px]" (click)="onDeleteTask(item._id)">Delete</div>
                             </div></td>
                         </tr>
                     }
@@ -60,19 +60,53 @@
         </div>
         <div class="card-body flex flex-col gap-3">
             <div class="flex gap-6">
-                <div class="flex flex-col">
+                <div class="flex flex-col ">
                     <label for="">Title</label>
-                    <input [(ngModel)]="taskObj.title" type="text" class="form-control">
+                    <input [(ngModel)]="taskObj.title" #title="ngModel" required minlength="5" maxlength="50" type="text" class="form-control w-[300px]">
+                    @if (title.touched) {
+                        <div class="text-danger">
+                            @if(title?.errors?.['required']) {
+                                <span>This is required message</span>
+                            }
+                            @if(title?.errors?.['minlength']) {
+                                <span>Minimum 5 Chars Required</span>
+                            }
+                            @if(title?.errors?.['maxlength']) {
+                                <span>Maximum 50 Chars</span>
+                            }
+                        </div>
+                    }             
                 </div>
                 <div class="flex flex-col">
-                    <label [(ngModel)]="taskObj.description" for="">Description</label>
-                    <textarea class="form-control w-[300px]" name="" id=""></textarea>
+                    <label for="">Description</label>
+                    <textarea [(ngModel)]="taskObj.description" #description="ngModel" required minlength="5" maxlength="100" class="form-control w-[300px]" name="" id=""></textarea>
+                    @if (description.touched) {
+                        <div class="text-danger">
+                            @if(description?.errors?.['required']) {
+                                <span>This is required message </span>
+                            }
+                            @if(description?.errors?.['minlength']) {
+                                <span>Minimum 5 Chars Required</span>
+                            }
+                            @if(description?.errors?.['maxlength']) {
+                                <span>Maximum 100 Chars</span>
+                            }
+                        </div>
+                    } 
                 </div>
             </div>
             <div class="flex gap-6">
                 <div class="flex flex-col">
-                    <label [(ngModel)]="taskObj.assignee" for="">Assignee</label>
-                    <input type="text" class="form-control">
+                    <label for="">Assignee</label>
+                    <input [(ngModel)]="taskObj.assignee" #assignee="ngModel" required="" type="text" class="form-control">
+                    @if (assignee.touched) {
+                        <div class="text-danger">
+                            @if(assignee?.errors?.['required']) {
+                                <span>This is required message</span>
+                            }
+                        
+                        </div>
+                    } 
                 </div>
                 <div class="btn bg-pink-500 hover:bg-pink-400 text-white justify-center flex items-center w-[150px] h-[50px]" (click)="onSaveTask()">Save</div>
             </div>

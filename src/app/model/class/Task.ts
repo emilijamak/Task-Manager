@@ -1,4 +1,5 @@
 export class Task {
+    _id: string;
     title: string;
     description: string;
     completed: boolean;
@@ -7,6 +8,7 @@ export class Task {
     assignee: string; // Added assignee to the class
 
     constructor() {
+        this._id = '',
         this.title = '';
         this.description = '';
         this.completed = false;  // Corrected boolean assignment

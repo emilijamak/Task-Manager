@@ -8,7 +8,7 @@ import { RouterOutlet, RouterModule, RouterLink, RouterLinkActive } from '@angul
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, RouterOutlet, TaskListComponent, RouterModule, RouterLink, RouterLinkActive],
+  imports: [NavbarComponent, TaskListComponent, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

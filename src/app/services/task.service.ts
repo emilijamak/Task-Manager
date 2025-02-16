@@ -3,22 +3,30 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../model/interface/task'
 import { environment } from '../../environments/environment.development';
+import { ApiResponseModel } from '../model/interface/apiResponseModel';
 
 
 @Injectable({
   providedIn: 'root' // This makes the service available everywhere without adding it to providers
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:3000/api/';  // Your backend API
 
   constructor(private http: HttpClient) {}
 
   // Fetch all tasks
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(environment.API_URL + "tasks");
+  getTasks(): Observable<ApiResponseModel> {
+    return this.http.get<ApiResponseModel>(environment.API_URL);
   }
 
-  saveTask(obj: Task): Observable<Task> {
-    return this.http.post<Task>(environment.API_URL + "task", obj)
+  createTask(obj: Task): Observable<ApiResponseModel> {
+    return this.http.post<ApiResponseModel>(environment.API_URL + "createTask", obj)
   } 
-}
+
+  deleteTask(id: string): Observable<ApiResponseModel> {
+    return this.http.delete<ApiResponseModel>(`${environment.API_URL}deleteTask/${id}`)
+  }
+
+  editTask(obj: Task): Observable<ApiResponseModel> {
+    return this.http.post<ApiResponseModel>(environment.API_URL + "editTask", obj)
+  }
+} 
