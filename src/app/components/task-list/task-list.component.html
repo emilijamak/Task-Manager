@@ -1,0 +1,81 @@
+<div class="flex gap-20 mt-20">
+
+
+<div class="row mt-4">
+    @if (!isLoaded) {
+        
+<div role="status" class="w-full animate-pulse">
+    <div class="h-[30px] bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+    <div class="h-[20px] bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    <div class="h-[20px] bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+    <div class="h-[20px] bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    <div class="h-[20px] bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    <div class="h-[20px] bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+    <span class="sr-only">Loading...</span>
+</div>
+
+    } 
+    @else {
+        <div class="col-10">
+            <table class="table table-bordered">
+                <thead class="">
+                    <tr >
+                        <th class="">No</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Assignee</th>
+                        <th>Created At</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of taskList; track $index) {
+                        <tr>
+                            <td> {{$index+1}}</td>
+                            <td>  {{item.title}}</td>
+                            <td>  {{item.description}}</td>
+                            <td>  {{item.assignee}}</td>
+                            <td>  {{item.createdAt}}</td>
+                            <td> {{ item.completed ? 'Completed' : 'Pending' }}</td>
+                            <td> <div class="flex gap-2">
+                                <div class="btn bg-green-800 hover:bg-green-600 text-white flex justify-center items-center h-[40px] w-[100px]">Edit</div>
+                                <div class="btn bg-pink-500 hover:bg-pink-400 text-white flex justify-center items-center h-[40px] w-[100px]">Delete</div>
+                            </div></td>
+                        </tr>
+                    }
+                   
+                </tbody>
+            </table>
+        </div>
+        
+    }
+    
+</div>
+<div class="flex flex-col gap-3">
+   
+    <div class="card">
+        <div class="card-header bg-success">
+            <h1 class="text-2xl text-white">Create a new task</h1> 
+        </div>
+        <div class="card-body flex flex-col gap-3">
+            <div class="flex gap-6">
+                <div class="flex flex-col">
+                    <label for="">Title</label>
+                    <input [(ngModel)]="taskObj.title" type="text" class="form-control">
+                </div>
+                <div class="flex flex-col">
+                    <label [(ngModel)]="taskObj.description" for="">Description</label>
+                    <textarea class="form-control w-[300px]" name="" id=""></textarea>
+                </div>
+            </div>
+            <div class="flex gap-6">
+                <div class="flex flex-col">
+                    <label [(ngModel)]="taskObj.assignee" for="">Assignee</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="btn bg-pink-500 hover:bg-pink-400 text-white justify-center flex items-center w-[150px] h-[50px]" (click)="onSaveTask()">Save</div>
+            </div>
+        </div>
+    </div>
+</div>
